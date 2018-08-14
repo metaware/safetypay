@@ -20,16 +20,16 @@ Or install it yourself as:
 
 ## Usage
 
-#### Initiate the Client
+#### 1. Initiate the Client
 
 ```ruby
-client = Safetypay::Client.configure do |config|
+Safetypay::Client.configure do |config|
     config.api_key = '...'
     config.signature_key = '...'
 end
 ```
 
-#### Create an ExpressTokenRequest
+#### 2. Create an ExpressTokenRequest
 
 ```ruby
 # Default Currency is BRL, but it can be overriden
@@ -44,7 +44,7 @@ request = Safetypay::ExpressTokenRequest.new({
 })
 ```
 
-#### Create An Express Token using the ExpressTokenRequest
+#### 3. Create An Express Token using the ExpressTokenRequest
 ```ruby
 express_token = Safetypay::Client.create_express_token(request: request)
 ```
