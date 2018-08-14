@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "safetypay"
+require "pry"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -10,5 +11,12 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+
+  config.before do
+    Safetypay::Client.configure do |config|
+      config.api_key = 'something_before'
+      config.signature_key = 'something_before'
+    end
   end
 end
