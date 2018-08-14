@@ -53,6 +53,18 @@ RSpec.describe Safetypay::ExpressTokenRequest do
         expect(subject.signature).to_not be_empty
       end
 
+      context '#operation_name' do
+        it 'should be set' do
+          expect(subject.operation_name).to eq(:ExpressTokenRequest)
+        end
+      end
+
+      context '#soap_action' do
+        it 'should be set' do
+          expect(subject.soap_action).to eq('urn:safetypay:contract:mws:api:CreateExpressToken')
+        end
+      end
+
       context 'excessively long merchant sales id (beyond 20 chars)' do
         let(:merchant_sales_id) { 'A' * 21 }
         it 'is not acceptable' do

@@ -58,14 +58,17 @@ module Safetypay
       '%.2f' % self.Amount
     end
 
-    def soap_action
-      "urn:safetypay:contract:mws:api:CreateExpressToken"
-    end
-
     def signature
       data = self.CurrencyID + self.amount + self.MerchantSalesID + self.Language + self.expiration_time + self.TransactionOkUrl + self.TransactionErrorUrl
       Digest::SHA256.hexdigest(data + Safetypay::Client.signature_key)
     end
 
+    def soap_action
+      "urn:safetypay:contract:mws:api:CreateExpressToken"
+    end
+
+    def operation_name
+      :ExpressTokenRequest
+    end
   end
 end
