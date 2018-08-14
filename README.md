@@ -20,11 +20,33 @@ Or install it yourself as:
 
 ## Usage
 
+#### Initiate the Client
+
 ```ruby
 client = Safetypay::Client.configure do |config|
     config.api_key = '...'
     config.signature_key = '...'
 end
+```
+
+#### Create an ExpressTokenRequest
+
+```ruby
+# Default Currency is BRL, but it can be overriden
+# Default Language is PT, but it can overriden
+request = Safetypay::ExpressTokenRequest.new({
+    MerchantSalesID: 'Order #12345',
+    ExpirationTime: 60, # (in minutes)
+    ShopperEmail: 'shopper@domain.com',
+    Amount: 101.35,
+    TransactionOkUrl: '...', # redirect the user to this URL, upon successful transaction
+    TransactionErrorUrl: '...', # redirect the user to this URL, upon failed transaction
+})
+```
+
+#### Create An Express Token using the ExpressTokenRequest
+```ruby
+express_token = Safetypay::Client.create_express_token(request: request)
 ```
 
 ## Development
