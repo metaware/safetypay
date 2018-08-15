@@ -1,15 +1,20 @@
+require 'dry-configurable'
+
 module Safetypay
   class Client
+    extend Dry::Configurable
 
-    attr_reader :api_key, :signature_key
+    setting :api_key, reader: true
+    setting :signature_key, reader: true
 
-    def initialize(api_key: nil, signature_key: nil)
-      if !api_key || !signature_key
-        raise Safetypay::FailedInitialization
-      end
-      @api_key = api_key
-      @signature_key = signature_key
+    def self.create_express_token(express_request: nil)
+      self.validate_credentials
     end
 
+    def self.validate_credentials
+      if !self.api_key || !self.signature_key
+        raise Safetypay::FailedInitialization
+      end
+    end
   end
 end
