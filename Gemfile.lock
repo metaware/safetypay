@@ -4,6 +4,8 @@ PATH
     safetypay (0.1.0)
       dry-configurable (~> 0.7.0)
       dry-struct (~> 0.5.1)
+      nori
+      ox
       symbolized (~> 0.0.1)
 
 GEM
@@ -39,6 +41,11 @@ GEM
       dry-logic (~> 0.4, >= 0.4.2)
     ice_nine (0.11.2)
     method_source (0.9.0)
+    mini_portile2 (2.3.0)
+    nokogiri (1.8.4)
+      mini_portile2 (~> 2.3.0)
+    nori (2.6.0)
+    ox (2.9.4)
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -52,6 +59,9 @@ GEM
     rspec-expectations (3.8.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
+    rspec-html-matchers (0.9.1)
+      nokogiri (~> 1)
+      rspec (>= 3.0.0.a, < 4)
     rspec-mocks (3.8.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
@@ -63,9 +73,10 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.16)
-  pry
+  pry (~> 0.11.3)
   rake (~> 10.0)
   rspec (~> 3.0)
+  rspec-html-matchers (~> 0.9.1)
   safetypay!
 
 BUNDLED WITH

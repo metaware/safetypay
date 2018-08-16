@@ -1,8 +1,10 @@
 require "bundler/setup"
 require "safetypay"
 require "pry"
+require "rspec-html-matchers"
 
 RSpec.configure do |config|
+  config.include RSpecHtmlMatchers
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
 
