@@ -71,8 +71,8 @@ RSpec.describe Safetypay::RequestFormatter do
           ExpirationTime: 100,
           ShopperEmail: 'shopper@email.com',
           Amount: 113.13,
-          TransactionOkUrl: 'http://vai.car/ok',
-          TransactionErrorUrl: 'http://vai.car/fail'
+          TransactionOkURL: 'http://vai.car/ok',
+          TransactionErrorURL: 'http://vai.car/fail'
         })
       end
       let(:doc) { Nokogiri::XML(subject) }
@@ -91,8 +91,8 @@ RSpec.describe Safetypay::RequestFormatter do
         merchant_sales_id = doc.xpath("//urn:MerchantSalesID")
         shopper_email = doc.xpath("//urn:ShopperEmail")
         amount = doc.xpath("//urn:Amount")
-        ok_url = doc.xpath("//urn:TransactionOkUrl")
-        error_url = doc.xpath("//urn:TransactionErrorUrl")
+        ok_url = doc.xpath("//urn:TransactionOkURL")
+        error_url = doc.xpath("//urn:TransactionErrorURL")
 
         expect(currency_id).to_not be_empty
         expect(language).to_not be_empty
@@ -104,7 +104,7 @@ RSpec.describe Safetypay::RequestFormatter do
         expect(error_url).to_not be_empty
 
         expect(currency_id.text).to eq('BRL')
-        expect(language.text).to eq('PT')
+        expect(language.text).to eq('EN')
         expect(product_id.text).to eq('2')
         expect(merchant_sales_id.text).to eq('Order 12345')
         expect(shopper_email.text).to eq('shopper@email.com')

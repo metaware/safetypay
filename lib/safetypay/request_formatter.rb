@@ -19,7 +19,8 @@ module Safetypay
       body = Ox::Element.new('soapenv:Body')
       request = Ox::Element.new("urn:#{payload.operation_name}")
 
-      payload.to_h.each do |key, value|
+      hash = payload.to_h.merge(ApiKey: Client.api_key)
+      hash.each do |key, value|
         elem = Ox::Element.new("urn:#{key}")
         elem << value.to_s
         request << elem

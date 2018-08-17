@@ -17,8 +17,8 @@ RSpec.configure do |config|
 
   config.before do
     Safetypay::Client.configure do |config|
-      config.api_key = 'something_before'
-      config.signature_key = 'something_before'
+      config.api_key = 'something'
+      config.signature_key = 'something'
     end
   end
 end
