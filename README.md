@@ -47,6 +47,13 @@ request = Safetypay::ExpressTokenRequest.new({
 #### 3. Create An Express Token using the ExpressTokenRequest
 ```ruby
 express_token = Safetypay::Client.create_express_token(request: request)
+=> #<Safetypay::ExpressToken shopper_redirect_url="https://sandbox-gateway.safetypay.com/Express4/Checkout/index?TokenID=0a93f62b-f7eb-4e9c-acfb-1e41e905b97d" error_manager={:error_number=>0, :description=>"No Error"}>
+```
+
+```ruby
+express_token.invalid? => false
+express_token.valid? => true
+express_token.error_manager => { error_number: 0, description: 'Some Message' }
 ```
 
 ## Development
