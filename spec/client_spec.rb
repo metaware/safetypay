@@ -21,7 +21,6 @@ RSpec.describe Safetypay::Client do
         Safetypay::Client.configure do |config|
           config.api_key = api_key
           config.signature_key = signature_key
-          config.environment = :sandbox
         end
       end
       let(:api_key) { 'd5fcfaa9bb44f48bc6e95c2940666048' }
@@ -40,6 +39,41 @@ RSpec.describe Safetypay::Client do
       it 'returns an instance of client' do
         subject
         expect { Safetypay::Client.create_express_token(request: token_request) }.not_to raise_error
+      end
+    end
+
+    context 'default environment' do
+      subject do
+        Safetypay::Client.configure do |config|
+          config.api_key = api_key
+          config.signature_key = signature_key
+        end
+      end
+
+      let(:api_key) { 'test-api-key' }
+      let(:signature_key) { 'test-signature-key' }
+      
+      it 'environment gets set to test' do
+        subject
+        expect(Safetypay::Client.config.environment).to eq('test')
+      end
+    end
+
+    context 'live environment' do
+      subject do
+        Safetypay::Client.configure do |config|
+          config.api_key = api_key
+          config.signature_key = signature_key
+          config.environment = :live
+        end
+      end
+
+      let(:api_key) { 'test-api-key' }
+      let(:signature_key) { 'test-signature-key' }
+      
+      it 'environment gets set to live' do
+        subject
+        expect(Safetypay::Client.config.environment).to eq('live')
       end
     end
   end
