@@ -6,6 +6,8 @@ require 'symbolized'
 module Safetypay
   class ExpressTokenRequest < Dry::Struct
 
+    constructor :symbolized
+
     # Product ID Codes: Thank you Safetypay for Magic Numbers!
     # 1: SafetyPay Express
     # 2: SafetyPay Cash
@@ -26,7 +28,7 @@ module Safetypay
     attribute :Language, Languages
     attribute :ProductID, ProductIDS
     attribute :RequestDateTime, Dry::Types['strict.string'].default(Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S'))
-    attribute :MerchantSalesID, Dry::Types['strict.string'].constrained(max_size: 20)
+    attribute :MerchantSalesID, Dry::Types['strict.string'].constrained(max_size: 256)
     attribute :ExpirationTime, Dry::Types['strict.integer'].constrained(lteq: 24*60)
     attribute :ShopperEmail, Dry::Types['strict.string']
     attribute :Amount, Dry::Types['strict.float']

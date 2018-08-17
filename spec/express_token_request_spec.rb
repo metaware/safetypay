@@ -65,8 +65,8 @@ RSpec.describe Safetypay::ExpressTokenRequest do
         end
       end
 
-      context 'excessively long merchant sales id (beyond 20 chars)' do
-        let(:merchant_sales_id) { 'A' * 21 }
+      context 'excessively long merchant sales id (beyond 256 chars)' do
+        let(:merchant_sales_id) { 'A' * 257 }
         it 'is not acceptable' do
           expect { subject }.to raise_error(Dry::Struct::Error)
         end

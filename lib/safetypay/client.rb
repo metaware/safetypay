@@ -23,6 +23,8 @@ module Safetypay
     def self.create_express_token(request: nil)
       self.validate_credentials
       response = Safetypay::Communicator.make_request(request)
+      response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:express_token_response)
+      Safetypay::ExpressToken.new(response)
     end
 
     def self.validate_credentials
@@ -40,13 +42,9 @@ module Safetypay
         request['SoapAction'] = payload.soap_action
         request.body = RequestFormatter.format(payload: payload)
         response = http.request request
-        if response.code == "200"
-          parser = Nori.new(convert_tags_to: lambda {|tag| tag.gsub('s:', '').snakecase.to_sym })
-          parser.parse(response.body)
-        else
-          puts "Failed"
-          puts response.body
-        end
+
+        parser = Nori.new(convert_tags_to: lambda {|tag| tag.gsub('s:', '').snakecase.to_sym })
+        parser.parse(response.body)
       end
     end
   end
