@@ -1,8 +1,10 @@
 require "bundler/setup"
 require "safetypay"
 require "pry"
+require "rspec-html-matchers"
 
 RSpec.configure do |config|
+  config.include RSpecHtmlMatchers
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
 
@@ -15,8 +17,8 @@ RSpec.configure do |config|
 
   config.before do
     Safetypay::Client.configure do |config|
-      config.api_key = 'something_before'
-      config.signature_key = 'something_before'
+      config.api_key = 'something'
+      config.signature_key = 'something'
     end
   end
 end

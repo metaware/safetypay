@@ -31,10 +31,13 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "dry-struct", "~> 0.5.1"
   spec.add_dependency "dry-configurable", "~> 0.7.0"
+  spec.add_dependency "nori"
+  spec.add_dependency "ox"
   spec.add_dependency "symbolized", "~> 0.0.1"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "pry"
+  spec.add_development_dependency "rspec-html-matchers", "~> 0.9.1"
+  spec.add_development_dependency "pry", "~> 0.11.3"
 end
