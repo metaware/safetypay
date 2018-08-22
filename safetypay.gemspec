@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "dry-struct", "~> 0.5.1"
   spec.add_runtime_dependency "dry-configurable", "~> 0.7.0"
+  spec.add_runtime_dependency 'dry-core', '~> 0.4', '>= 0.4.3'
   spec.add_runtime_dependency "nori"
   spec.add_runtime_dependency "ox"
   spec.add_runtime_dependency "symbolized", "~> 0.0.1"
