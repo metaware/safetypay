@@ -67,6 +67,7 @@ RSpec.describe Safetypay::Client do
       let(:token_request) do
         Safetypay::ExpressTokenRequest.new({
           MerchantSalesID: 'Order12345',
+          MerchantOrderID: '12345',
           ExpirationTime: 100,
           ShopperEmail: 'shopper@email.com',
           Amount: 113.13,
@@ -108,6 +109,7 @@ RSpec.describe Safetypay::Client do
 
       let(:token_request) do
         Safetypay::ExpressTokenRequest.new({
+          MerchantOrderID: merchant_order_id,
           MerchantSalesID: merchant_sales_id,
           ExpirationTime: 100,
           ShopperEmail: 'shopper@email.com',
@@ -123,6 +125,7 @@ RSpec.describe Safetypay::Client do
 
       let(:amount) { 113.13 }
       let(:merchant_sales_id) { 'Order 12345' }
+      let(:merchant_order_id) { '12345' }
       let(:token) { Safetypay::Client.create_express_token(request: token_request) }
 
       context 'when amount is an Integer' do

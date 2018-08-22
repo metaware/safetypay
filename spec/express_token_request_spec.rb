@@ -13,9 +13,11 @@ RSpec.describe Safetypay::ExpressTokenRequest do
       let(:amount) { 100.00 }
       let(:expiration_time) { 120 }
       let(:merchant_sales_id) { 'Order #12345' }
+      let(:merchant_order_id) { '12345' }
       let(:email) { 'shopper@domain.com' }
       let(:payload) do
         {
+          MerchantOrderID: merchant_order_id,
           MerchantSalesID: merchant_sales_id,
           ExpirationTime: expiration_time,
           ShopperEmail: email,

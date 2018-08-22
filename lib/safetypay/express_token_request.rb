@@ -28,7 +28,8 @@ module Safetypay
     attribute :Language, Languages
     attribute :ProductID, ProductIDS
     attribute :RequestDateTime, Dry::Types['strict.string'].default(Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S'))
-    attribute :MerchantSalesID, Dry::Types['strict.string'].constrained(max_size: 256)
+    attribute :MerchantSalesID, Dry::Types['strict.string'].constrained(max_size: 20)
+    attribute :MerchantOrderID, Dry::Types['strict.string'].constrained(max_size: 20)
     attribute :ExpirationTime, Dry::Types['strict.integer'].constrained(lteq: 24*60)
     attribute :ShopperEmail, Dry::Types['strict.string']
     attribute :Amount, Dry::Types['strict.float']
@@ -42,6 +43,7 @@ module Safetypay
         Language: self.Language,
         ProductID: self.ProductID,
         MerchantSalesID: self.MerchantSalesID,
+        MerchantOrderID: self.MerchantOrderID,
         ExpirationTime: self.expiration_time,
         ShopperEmail: self.ShopperEmail,
         Amount: self.amount,

@@ -67,6 +67,7 @@ RSpec.describe Safetypay::RequestFormatter do
       let(:operation_name) { 'ExpressTokenRequest' }
       let(:payload) do 
         Safetypay::ExpressTokenRequest.new({
+          MerchantOrderID: '12345',
           MerchantSalesID: 'Order 12345',
           ExpirationTime: 100,
           ShopperEmail: 'shopper@email.com',
@@ -89,6 +90,7 @@ RSpec.describe Safetypay::RequestFormatter do
         language = doc.xpath("//urn:Language")
         product_id = doc.xpath("//urn:ProductID")
         merchant_sales_id = doc.xpath("//urn:MerchantSalesID")
+        merchant_order_id = doc.xpath("//urn:MerchantOrderID")
         shopper_email = doc.xpath("//urn:ShopperEmail")
         amount = doc.xpath("//urn:Amount")
         ok_url = doc.xpath("//urn:TransactionOkURL")
@@ -98,6 +100,7 @@ RSpec.describe Safetypay::RequestFormatter do
         expect(language).to_not be_empty
         expect(product_id).to_not be_empty
         expect(merchant_sales_id).to_not be_empty
+        expect(merchant_order_id).to_not be_empty
         expect(shopper_email).to_not be_empty
         expect(amount).to_not be_empty
         expect(ok_url).to_not be_empty
@@ -107,6 +110,7 @@ RSpec.describe Safetypay::RequestFormatter do
         expect(language.text).to eq('EN')
         expect(product_id.text).to eq('2')
         expect(merchant_sales_id.text).to eq('Order 12345')
+        expect(merchant_order_id.text).to eq('12345')
         expect(shopper_email.text).to eq('shopper@email.com')
         expect(amount.text).to eq('113.13')
         expect(ok_url.text).to eq('http://vai.car/ok')
