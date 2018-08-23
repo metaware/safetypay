@@ -20,10 +20,9 @@ module Safetypay
       request = Ox::Element.new("urn:#{payload.operation_name}")
 
       hash = payload.to_h.merge(ApiKey: Client.api_key)
-      hash.each do |key, value|
-        elem = Ox::Element.new("urn:#{key}")
-        elem << value.to_s
-        request << elem
+
+      build_node(hash) do |node|
+        request << node
       end
 
       body << request
@@ -31,6 +30,32 @@ module Safetypay
       top << body
       doc << top
       Ox.dump(doc)
+    end
+
+    def self.build_node(value)
+      if value.is_a?(Hash)
+        value.each do |key, val|
+          node = Ox::Element.new("urn:#{key}")
+          build_node(val) do |inner_node|
+            node << inner_node
+          end
+          yield(node)
+        end
+      end
+      if value.is_a?(String) || value.is_a?(Numeric)
+        node = value.to_s
+        yield(node)
+      end
+      if value.is_a?(Array)
+        value.each_with_index do |elem, index|
+          key = elem.keys.first
+          node = Ox::Element.new("urn:#{key}")
+          build_node(elem[key]) do |inner_node|
+            node << inner_node
+          end
+          yield(node)
+        end
+      end
     end
 
     private

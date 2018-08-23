@@ -61,6 +61,61 @@ RSpec.describe Safetypay::RequestFormatter do
           end
         end
       end
+
+      context 'nested formatting' do
+        let(:soap_action) { 'hellosoap:action' }
+        let(:operation_name) { 'hellosoap' }
+        let(:payload) do
+          double(
+            to_h: { 
+              Name: "Thanos", 
+              Dream: "Collect Infinity Stones",
+              Children: [{
+                Daughter: {
+                  Name: 'Gamora',
+                  Color: 'Green'
+                }
+              }, {
+                Daughter: {
+                  Name: 'Nebula',
+                  Color: 'Blue'
+                }
+              }]
+            },
+            soap_action: soap_action,
+            operation_name: operation_name
+          )
+        end
+
+        context "XML generation" do
+          let(:doc) { Nokogiri::XML(subject) }
+
+          it 'should always generate default parent nodes' do
+            expect(doc.xpath("/soapenv:Envelope")).to_not be_empty
+            expect(doc.xpath("/soapenv:Envelope/soapenv:Header")).to_not be_empty
+          end
+
+          it 'should generate child nodes as per payload' do
+            expect(doc.xpath("//urn:hellosoap")).to_not be_empty
+
+            expect(doc.xpath("//urn:hellosoap/urn:Name")).to_not be_empty
+            expect(doc.xpath("//urn:hellosoap/urn:Name").text).to eq('Thanos')
+
+            expect(doc.xpath("//urn:hellosoap/urn:Dream")).to_not be_empty
+            expect(doc.xpath("//urn:hellosoap/urn:Dream").text).to eq('Collect Infinity Stones')
+          end
+
+          it 'should generate child of children nodes' do
+            expect(doc.xpath("//urn:Children")).to_not be_empty
+
+            expect(doc.xpath("//urn:Children/urn:Daughter/urn:Name").size).to eq(2)
+            expect(doc.xpath("//urn:Children/urn:Daughter/urn:Color").size).to eq(2)
+
+            expect(doc.xpath("//urn:Children/urn:Daughter[1]/urn:Name").text).to eq('Gamora')
+            expect(doc.xpath("//urn:Children/urn:Daughter[2]/urn:Name").text).to eq('Nebula')
+          end
+        end
+      end
     end
 
     context 'actual formatting' do

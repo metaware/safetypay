@@ -1,4 +1,19 @@
 RSpec.describe Safetypay::ExpressTokenRequest do
+  it_behaves_like "a safetypay request" do
+    let(:request) do
+      payload = {
+        MerchantOrderID: '1',
+        MerchantSalesID: '1',
+        ExpirationTime: 120,
+        ShopperEmail: 'email',
+        Amount: 52.50,
+        TransactionOkURL: 'http://vai.car/ok',
+        TransactionErrorURL: 'http://vai.car/fail'
+      }
+      Safetypay::ExpressTokenRequest.new(payload)
+    end
+  end
+
   context 'initialization' do    
     subject { Safetypay::ExpressTokenRequest.new(payload) }
     let(:payload) { nil }

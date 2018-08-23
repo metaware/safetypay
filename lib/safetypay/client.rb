@@ -27,6 +27,25 @@ module Safetypay
       Safetypay::ExpressToken.new(response)
     end
 
+    def self.get_new_operations_activity
+      request = GetNewOperationsActivityRequest.new
+      response = Communicator.make_request(request)
+      response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_response).fetch(:list_of_operations, {}).fetch(:operation)
+      os = response.map { |operation| Operation.new(operation) }
+    end
+
+    # def self.confirm_new_operations_activity
+    #   request = ConfirmOperationRequest.new
+    #   response = Communicator.make_request(request)
+    #   response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_response).fetch(:list_of_operations, {}).fetch(:operation, nil)
+    # end
+
+    # def self.get_operation(merchant_sales_id: nil)
+    #   request = OperationRequest.new(merchant_sales_id: merchant_sales_id)
+    #   response = Communicator.make_request(request)
+    #   response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_response).fetch(:list_of_operations, {}).fetch(:operation, nil)
+    # end
+
     def self.validate_credentials
       if !self.api_key || !self.signature_key
         raise Safetypay::FailedInitialization
