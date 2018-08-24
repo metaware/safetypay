@@ -26,7 +26,7 @@ Or install it yourself as:
 Safetypay::Client.configure do |config|
     config.api_key = '...'
     config.signature_key = '...'
-    config.environment = :live | anything else will go to sandbox
+    config.environment = :production | anything else will go to sandbox
 end
 ```
 
