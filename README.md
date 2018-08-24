@@ -83,7 +83,7 @@ operations = Safetypay::Client.get_new_operations_activity
 operations.first.paid?
 ```
 
-#### 5. Confirm a Transaction
+#### 6. Confirm a Transaction
 
 ```ruby
 operations = Safetypay::Client.get_new_operations_activity
