@@ -30,7 +30,7 @@ module Safetypay
       status[:status_code] == "102" && status[:description] == "Paid"
     end
 
-    def confirm
+    def confirm!
       Client.confirm_new_operations_activity(operation: self)
     end
 

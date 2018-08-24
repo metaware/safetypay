@@ -56,6 +56,43 @@ express_token.valid? => true
 express_token.error_manager => { error_number: 0, description: 'Some Message' }
 ```
 
+#### 4. Get a List of Unconfirmed Transactions
+
+```ruby
+operations = Safetypay::Client.get_new_operations_activity
+```
+
+Any given `Safetypay::Operation` has following attributes:
+
+```ruby
+Safetypay::Operation#id
+Safetypay::Operation#operation_id
+Safetypay::Operation#merchant_sales_id
+Safetypay::Operation#merchant_order_id
+Safetypay::Operation#creation_date_time
+Safetypay::Operation#amount
+Safetypay::Operation#currency_id
+Safetypay::Operation#shopper_currency_id
+Safetypay::Operation#confirm!
+```
+
+#### 5. Check if a Transaction is Paid?
+
+```ruby
+operations = Safetypay::Client.get_new_operations_activity
+operations.first.paid?
+```
+
+#### 5. Confirm a Transaction
+
+```ruby
+operations = Safetypay::Client.get_new_operations_activity
+operation = operations.first
+if operation.paid?
+  operation.confirm!
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
