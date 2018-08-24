@@ -22,10 +22,10 @@ module Safetypay
     end
 
     def signature_data
-      self.request_date_time + 
-        self.operation.operation_id + 
-        self.operation.merchant_sales_id + 
-        self.operation.merchant_order_id + 
+      self.request_date_time +
+        self.operation.operation_id +
+        self.operation.merchant_sales_id +
+        self.operation.merchant_order_id +
         self.operation.status
     end
 

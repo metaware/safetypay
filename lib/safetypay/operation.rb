@@ -9,7 +9,7 @@ module Safetypay
     attribute :operation_id, Dry::Types['strict.string']
     attribute :creation_date_time, Dry::Types['strict.date_time']
     attribute :merchant_sales_id, Dry::Types['strict.string']
-    attribute :merchant_order_id, Dry::Types['strict.string'].optional
+    attribute :merchant_order_id, Dry::Types['coercible.string']
     attribute :amount, Dry::Types['coercible.float']
     attribute :currency_id, Safetypay::ExpressTokenRequest::Currencies
     attribute :shopper_amount, Dry::Types['coercible.float']
