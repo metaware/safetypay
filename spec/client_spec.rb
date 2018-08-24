@@ -67,7 +67,7 @@ RSpec.describe Safetypay::Client do
       let(:token_request) do
         Safetypay::ExpressTokenRequest.new({
           MerchantSalesID: 'Order12345',
-          MerchantOrderID: '12345',
+          TrackingCode: '12345',
           ExpirationTime: 100,
           ShopperEmail: 'shopper@email.com',
           Amount: 113.13,
@@ -109,7 +109,7 @@ RSpec.describe Safetypay::Client do
 
       let(:token_request) do
         Safetypay::ExpressTokenRequest.new({
-          MerchantOrderID: merchant_order_id,
+          TrackingCode: merchant_order_id,
           MerchantSalesID: merchant_sales_id,
           ExpirationTime: 100,
           ShopperEmail: 'shopper@email.com',

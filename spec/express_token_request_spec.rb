@@ -2,7 +2,7 @@ RSpec.describe Safetypay::ExpressTokenRequest do
   it_behaves_like "a safetypay request" do
     let(:request) do
       payload = {
-        MerchantOrderID: '1',
+        TrackingCode: '1',
         MerchantSalesID: '1',
         ExpirationTime: 120,
         ShopperEmail: 'email',
@@ -32,7 +32,7 @@ RSpec.describe Safetypay::ExpressTokenRequest do
       let(:email) { 'shopper@domain.com' }
       let(:payload) do
         {
-          MerchantOrderID: merchant_order_id,
+          TrackingCode: merchant_order_id,
           MerchantSalesID: merchant_sales_id,
           ExpirationTime: expiration_time,
           ShopperEmail: email,
@@ -157,7 +157,7 @@ RSpec.describe Safetypay::ExpressTokenRequest do
           expect(hash['Language']).to eq(hash[:Language])
 
           expect(hash['MerchantSalesID']).to eq('Order #12345')
-          expect(hash['MerchantSalesID']).to eq(hash[:MerchantSalesID])
+          expect(hash['TrackingCode']).to eq(hash[:TrackingCode])
         end
       end
     end

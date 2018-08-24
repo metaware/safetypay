@@ -29,7 +29,7 @@ module Safetypay
     attribute :ProductID, ProductIDS
     attribute :RequestDateTime, Dry::Types['strict.string'].default(Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S'))
     attribute :MerchantSalesID, Dry::Types['strict.string'].constrained(max_size: 20)
-    attribute :MerchantOrderID, Dry::Types['strict.string'].constrained(max_size: 20)
+    attribute :TrackingCode, Dry::Types['strict.string'].constrained(max_size: 20)
     attribute :ExpirationTime, Dry::Types['strict.integer'].constrained(lteq: 24*60)
     attribute :ShopperEmail, Dry::Types['strict.string']
     attribute :Amount, Dry::Types['strict.float']
@@ -43,7 +43,7 @@ module Safetypay
         Language: self.Language,
         ProductID: self.ProductID,
         MerchantSalesID: self.MerchantSalesID,
-        MerchantOrderID: self.MerchantOrderID,
+        TrackingCode: self.TrackingCode,
         ExpirationTime: self.expiration_time,
         ShopperEmail: self.ShopperEmail,
         Amount: self.amount,
@@ -65,7 +65,15 @@ module Safetypay
     end
 
     def signature_data
-      self.RequestDateTime + self.CurrencyID + self.amount + self.MerchantSalesID + self.Language + self.expiration_time + self.TransactionOkURL + self.TransactionErrorURL
+      self.RequestDateTime +
+        self.CurrencyID +
+        self.amount +
+        self.MerchantSalesID +
+        self.Language +
+        self.TrackingCode +
+        self.expiration_time +
+        self.TransactionOkURL +
+        self.TransactionErrorURL
     end
 
     def signature
