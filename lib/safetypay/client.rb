@@ -36,7 +36,11 @@ module Safetypay
       request = GetNewOperationsActivityRequest.new
       response = Communicator.make_request(request)
       response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_response, {}).fetch(:list_of_operations, {}).fetch(:operation, [])
-      response.map { |operation| Operation.new(operation) }
+      if response.is_a?(Hash)
+        Array(Operation.new(response))
+      else
+        response.map { |operation| Operation.new(operation) }
+      end
     end
 
     def self.confirm_new_operations_activity(operation: nil)
