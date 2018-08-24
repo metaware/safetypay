@@ -16,13 +16,22 @@ module Safetypay
     attribute :shopper_currency_id, Dry::Types['strict.string']
     attribute :operation_activities, Dry::Types['hash']
 
+    def id
+      operation_id
+    end
+
+    def status
+      status = operation_activities[:operation_activity][:status]
+      status[:status_code]
+    end
+
     def paid?
       status = operation_activities[:operation_activity][:status]
       status[:status_code] == "102" && status[:description] == "Paid"
     end
 
     def confirm
-      binding.pry
+      Client.confirm_new_operations_activity(operation: self)
     end
 
   end

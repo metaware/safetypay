@@ -1,10 +1,15 @@
 require 'dry-configurable'
 require 'net/http'
 require 'nori'
+require 'safetypay/confirm_operation_request'
+require 'safetypay/operation'
 
 module Safetypay
   class Client
     extend Dry::Configurable
+
+    setting :request_callback, reader: true
+    setting :response_callback, reader: true
 
     setting :api_key, reader: true
     setting :signature_key, reader: true
@@ -30,15 +35,15 @@ module Safetypay
     def self.get_new_operations_activity
       request = GetNewOperationsActivityRequest.new
       response = Communicator.make_request(request)
-      response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_response).fetch(:list_of_operations, {}).fetch(:operation)
-      os = response.map { |operation| Operation.new(operation) }
+      response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_response, {}).fetch(:list_of_operations, {}).fetch(:operation, [])
+      response.map { |operation| Operation.new(operation) }
     end
 
-    # def self.confirm_new_operations_activity
-    #   request = ConfirmOperationRequest.new
-    #   response = Communicator.make_request(request)
-    #   response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_response).fetch(:list_of_operations, {}).fetch(:operation, nil)
-    # end
+    def self.confirm_new_operations_activity(operation: nil)
+      request = ConfirmOperationRequest.new(operation: operation)
+      response = Communicator.make_request(request)
+      response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_activity_notified_response, {})
+    end
 
     # def self.get_operation(merchant_sales_id: nil)
     #   request = OperationRequest.new(merchant_sales_id: merchant_sales_id)
@@ -60,7 +65,10 @@ module Safetypay
         request.content_type = 'text/xml'
         request['SoapAction'] = payload.soap_action
         request.body = RequestFormatter.format(payload: payload)
+        
+        Client.request_callback.call(request.body) unless Client.request_callback.blank?
         response = http.request request
+        Client.response_callback.call(request.body) unless Client.response_callback.blank?
 
         parser = Nori.new(convert_tags_to: lambda {|tag| tag.gsub('s:', '').snakecase.to_sym })
         parser.parse(response.body)

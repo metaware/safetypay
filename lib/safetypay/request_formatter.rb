@@ -11,31 +11,34 @@ module Safetypay
 
     def self.build_xml(payload)
       doc = Ox::Document.new
-      top = Ox::Element.new('soapenv:Envelope')
-      top['xmlns:soapenv'] = 'http://schemas.xmlsoap.org/soap/envelope/'
-      top['xmlns:urn'] = 'urn:safetypay:messages:mws:api'
+      @top = Ox::Element.new('soapenv:Envelope')
+      @top['xmlns:soapenv'] = 'http://schemas.xmlsoap.org/soap/envelope/'
+      @top['xmlns:urn'] = 'urn:safetypay:messages:mws:api'
       
       header = Ox::Element.new('soapenv:Header')
       body = Ox::Element.new('soapenv:Body')
-      request = Ox::Element.new("urn:#{payload.operation_name}")
+      @prefix = "urn"
+      request = Ox::Element.new("#{@prefix}:#{payload.operation_name}")
 
-      hash = payload.to_h.merge(ApiKey: Client.api_key)
+      hash = payload.to_h
+      signature = hash.delete(:Signature)
+      hash = { ApiKey: Client.api_key, Signature: signature }.merge!(hash)
 
       build_node(hash) do |node|
         request << node
       end
 
       body << request
-      top << header
-      top << body
-      doc << top
+      @top << header
+      @top << body
+      doc << @top
       Ox.dump(doc)
     end
 
     def self.build_node(value)
       if value.is_a?(Hash)
         value.each do |key, val|
-          node = Ox::Element.new("urn:#{key}")
+          node = Ox::Element.new("#{@prefix}:#{key}")
           build_node(val) do |inner_node|
             node << inner_node
           end
@@ -49,7 +52,9 @@ module Safetypay
       if value.is_a?(Array)
         value.each_with_index do |elem, index|
           key = elem.keys.first
-          node = Ox::Element.new("urn:#{key}")
+          @prefix = "urn#{index+1}"
+          @top["xmlns:#{@prefix}"] = 'urn:safetypay:schema:mws:api'
+          node = Ox::Element.new("#{@prefix}:#{key}")
           build_node(elem[key]) do |inner_node|
             node << inner_node
           end

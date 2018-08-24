@@ -108,11 +108,11 @@ RSpec.describe Safetypay::RequestFormatter do
           it 'should generate child of children nodes' do
             expect(doc.xpath("//urn:Children")).to_not be_empty
 
-            expect(doc.xpath("//urn:Children/urn:Daughter/urn:Name").size).to eq(2)
-            expect(doc.xpath("//urn:Children/urn:Daughter/urn:Color").size).to eq(2)
+            expect(doc.xpath("//urn:Children/urn1:Daughter/urn1:Name").size).to eq(2)
+            expect(doc.xpath("//urn:Children/urn2:Daughter/urn2:Color").size).to eq(2)
 
-            expect(doc.xpath("//urn:Children/urn:Daughter[1]/urn:Name").text).to eq('Gamora')
-            expect(doc.xpath("//urn:Children/urn:Daughter[2]/urn:Name").text).to eq('Nebula')
+            expect(doc.xpath("//urn:Children/urn1:Daughter[1]/urn1:Name").text).to eq('Gamora')
+            expect(doc.xpath("//urn:Children/urn2:Daughter[2]/urn2:Name").text).to eq('Nebula')
           end
         end
       end
