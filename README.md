@@ -26,6 +26,7 @@ Or install it yourself as:
 Safetypay::Client.configure do |config|
     config.api_key = '...'
     config.signature_key = '...'
+    config.environment = :production | anything else will go to sandbox
 end
 ```
 
@@ -39,8 +40,8 @@ request = Safetypay::ExpressTokenRequest.new({
     ExpirationTime: 60, # (in minutes)
     ShopperEmail: 'shopper@domain.com',
     Amount: 101.35,
-    TransactionOkUrl: '...', # redirect the user to this URL, upon successful transaction
-    TransactionErrorUrl: '...', # redirect the user to this URL, upon failed transaction
+    TransactionOkURL: '...', # redirect the user to this URL, upon successful transaction
+    TransactionErrorURL: '...', # redirect the user to this URL, upon failed transaction
 })
 ```
 
