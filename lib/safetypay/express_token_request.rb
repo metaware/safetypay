@@ -24,9 +24,15 @@ module Safetypay
     Currencies = Dry::Types['strict.string'].default('BRL').enum('BRL', 'USD')
     Languages = Dry::Types['strict.string'].default('EN').enum('EN', 'PT')
 
+    # PaymentChannels
+    # Channel(OL): Online Bank Payment
+    # Channel(WP): Walk-in Payment / Loterica
+    PaymentChannels = Dry::Types['strict.string'].default('Channel(OL)').enum('Channel(OL)', 'Channel(WP)')
+
     attribute :CurrencyID, Currencies
     attribute :Language, Languages
     attribute :ProductID, ProductIDS
+    attribute :FilterBy, PaymentChannels
     attribute :RequestDateTime, Dry::Types['strict.string'].default(Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S'))
     attribute :MerchantSalesID, Dry::Types['strict.string'].constrained(max_size: 20)
     attribute :TrackingCode, Dry::Types['strict.string'].constrained(max_size: 20)
@@ -49,6 +55,7 @@ module Safetypay
         Amount: self.amount,
         TransactionOkURL: self.TransactionOkURL,
         TransactionErrorURL: self.TransactionErrorURL,
+        FilterBy: self.FilterBy,
         Signature: self.signature
       }
       SymbolizedHash.new(hash)
