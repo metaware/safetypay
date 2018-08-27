@@ -3,6 +3,7 @@ require 'net/http'
 require 'nori'
 require 'safetypay/confirm_operation_request'
 require 'safetypay/operation'
+require 'safetypay/operation_request'
 
 module Safetypay
   class Client
@@ -33,9 +34,15 @@ module Safetypay
     end
 
     def self.get_new_operations_activity
+      self.validate_credentials
       request = GetNewOperationsActivityRequest.new
       response = Communicator.make_request(request)
-      response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_response, {}).fetch(:list_of_operations, {}).fetch(:operation, [])
+      response = response
+                  .fetch(:envelope, {})
+                  .fetch(:body, {})
+                  .fetch(:operation_response, {})
+                  .fetch(:list_of_operations, {})
+                  .fetch(:operation, [])
       if response.is_a?(Hash)
         Array(Operation.new(response))
       else
@@ -44,16 +51,26 @@ module Safetypay
     end
 
     def self.confirm_new_operations_activity(operation: nil)
+      self.validate_credentials
       request = ConfirmOperationRequest.new(operation: operation)
       response = Communicator.make_request(request)
-      response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_activity_notified_response, {})
+      response
+        .fetch(:envelope, {})
+        .fetch(:body, {})
+        .fetch(:operation_activity_notified_response, {})
     end
 
-    # def self.get_operation(merchant_sales_id: nil)
-    #   request = OperationRequest.new(merchant_sales_id: merchant_sales_id)
-    #   response = Communicator.make_request(request)
-    #   response = response.fetch(:envelope, {}).fetch(:body, {}).fetch(:operation_response).fetch(:list_of_operations, {}).fetch(:operation, nil)
-    # end
+    def self.get_operation(merchant_sales_id: nil)
+      self.validate_credentials
+      request = OperationRequest.new(merchant_sales_id: merchant_sales_id)
+      response = Communicator.make_request(request)
+      response = response
+        .fetch(:envelope, {})
+        .fetch(:body, {})
+        .fetch(:operation_response)
+        .fetch(:list_of_operations, {})
+        .fetch(:operation, nil)
+    end
 
     def self.validate_credentials
       if !self.api_key || !self.signature_key

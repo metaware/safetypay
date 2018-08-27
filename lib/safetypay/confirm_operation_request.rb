@@ -1,7 +1,7 @@
 module Safetypay
   class ConfirmOperationRequest
     attr_accessor :request_date_time, :operation
-    def initialize(operation: operation)
+    def initialize(operation: nil)
       self.request_date_time = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
       self.operation = operation
     end
