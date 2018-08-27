@@ -4,6 +4,7 @@ require 'nori'
 require 'safetypay/confirm_operation_request'
 require 'safetypay/operation'
 require 'safetypay/operation_request'
+require 'safetypay/operation_confirmation'
 
 module Safetypay
   class Client
@@ -54,10 +55,11 @@ module Safetypay
       self.validate_credentials
       request = ConfirmOperationRequest.new(operation: operation)
       response = Communicator.make_request(request)
-      response
+      confirmation = response
         .fetch(:envelope, {})
         .fetch(:body, {})
         .fetch(:operation_activity_notified_response, {})
+      OperationConfirmation.new(confirmation)
     end
 
     def self.get_operation(merchant_sales_id: nil)

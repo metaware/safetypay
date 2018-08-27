@@ -31,7 +31,8 @@ module Safetypay
     end
 
     def confirm!
-      Client.confirm_new_operations_activity(operation: self)
+      confirmation = Client.confirm_new_operations_activity(operation: self)
+      confirmation.confirmed?
     end
 
   end
