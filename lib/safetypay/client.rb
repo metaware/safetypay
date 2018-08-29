@@ -21,7 +21,7 @@ module Safetypay
   
     def self.endpoint
       if Client.config.environment == "live"
-        URI.parse("https://sandbox-mws2.safetypay.com/express/ws/v.3.0")
+        URI.parse("https://mws2.safetypay.com/express/ws/v.3.0")
       else
         URI.parse("https://sandbox-mws2.safetypay.com/express/ws/v.3.0")
       end

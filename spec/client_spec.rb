@@ -61,6 +61,7 @@ RSpec.describe Safetypay::Client do
         Safetypay::Client.configure do |config|
           config.api_key = api_key
           config.signature_key = signature_key
+          config.environment = :test
         end
       end
 
@@ -81,7 +82,7 @@ RSpec.describe Safetypay::Client do
       end
 
       let(:token) { Safetypay::Client.create_express_token(request: token_request) }
-
+      
       it 'and does not crash' do
         expect { token }.not_to raise_error
       end
@@ -91,6 +92,7 @@ RSpec.describe Safetypay::Client do
       end
 
       it 'should be a valid token' do
+        binding.pry
         expect(token.valid?).to be true
       end
 
