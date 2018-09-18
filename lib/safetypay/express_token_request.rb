@@ -37,7 +37,7 @@ module Safetypay
     attribute :MerchantSalesID, Dry::Types['strict.string'].constrained(max_size: 20)
     attribute :TrackingCode, Dry::Types['strict.string'].constrained(max_size: 20)
     attribute :ExpirationTime, Dry::Types['strict.integer'].constrained(lteq: 24*60)
-    attribute :ShopperEmail, Dry::Types['strict.string']
+    attribute :ShopperEmail, Dry::Types['strict.string'].constructor {|value| value.lstrip.rstrip }
     attribute :Amount, Dry::Types['strict.float']
     attribute :TransactionOkURL, Dry::Types['strict.string']
     attribute :TransactionErrorURL, Dry::Types['strict.string']
