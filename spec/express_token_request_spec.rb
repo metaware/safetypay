@@ -139,6 +139,30 @@ RSpec.describe Safetypay::ExpressTokenRequest do
         end
       end
 
+      context 'normal email' do
+        let(:email) { 'shopper@domain.com ' }
+
+        it 'should be passed on as-is' do
+          expect(subject.ShopperEmail).to eq('shopper@domain.com')
+        end
+      end
+
+      context 'email that should be squished' do
+        let(:email) { ' email-that-requires @squishing.com ' }
+
+        it 'gets squished before passing it onto create_express_token request' do
+          expect(subject.ShopperEmail).to eq('email-that-requires @squishing.com')
+        end
+      end
+
+      context 'email that should not be squished' do
+        let(:email) { 'email-that-should-not-be @squished.com ' }
+
+        it 'gets squished before passing it onto create_express_token request' do
+          expect(subject.ShopperEmail).to eq('email-that-should-not-be @squished.com')
+        end
+      end
+
       context '#to_h' do
         it 'can be converted to a hash' do
           hash = subject.to_h
