@@ -49,6 +49,11 @@ RSpec.describe Safetypay::Client do
         subject
         expect(Safetypay::Client.config.environment).to eq('live')
       end
+
+      it 'should set the endpoint to live' do
+        subject
+        expect(Safetypay::Client.endpoint.host).to eq("mws2.safetypay.com")
+      end
     end
   end
 
