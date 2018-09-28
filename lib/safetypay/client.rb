@@ -20,7 +20,7 @@ module Safetypay
     end
   
     def self.endpoint
-      if Client.config.environment == "live"
+      if self.config.environment == "live"
         URI.parse("https://mws2.safetypay.com/express/ws/v.3.0")
       else
         URI.parse("https://sandbox-mws2.safetypay.com/express/ws/v.3.0")
@@ -91,7 +91,7 @@ module Safetypay
         
         Client.request_callback.call(request.body) unless Client.request_callback.blank?
         response = http.request request
-        Client.response_callback.call(request.body) unless Client.response_callback.blank?
+        Client.response_callback.call(response.body) unless Client.response_callback.blank?
 
         parser = Nori.new(convert_tags_to: lambda {|tag| tag.gsub('s:', '').snakecase.to_sym })
         parser.parse(response.body)

@@ -31,6 +31,11 @@ RSpec.describe Safetypay::Client do
         subject
         expect(Safetypay::Client.config.environment).to eq('test')
       end
+
+      it 'should set the endpoint to sandbox' do
+        subject
+        expect(Safetypay::Client.endpoint.host).to eq("sandbox-mws2.safetypay.com")
+      end
     end
 
     context 'live environment' do
